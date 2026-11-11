@@ -14,6 +14,24 @@ Due to the precedence check, this algorithm safely follows BODMAS.
 
 Bracket support and scientific features are not implimented.
 
+## Design
+
+Its a simple design with just some basic operations but there is a dark mode and its pretty responsive.
+
+### The Default look
+![The Calculator](showcase/image.png)
+
+### Dark Mode
+![Dark Mode](showcase/image-1.png)
+
+### Responsive Design
+![Responsive](showcase/image-3.png)
+
+### Debug Mode
+There's even a terminal debug toggle!
+![alt text](showcase/image-4.png)
+
+
 ## Technologies Used:
 
 C++, QML, QT, QTQuick, CMake

@@ -102,6 +102,7 @@ ApplicationWindow {
                 padding: Theme.spaceS
                 placeholderText: "Enter Expression"
                 Layout.fillWidth: true
+                Layout.fillHeight: mainWindow.isPortrait ? false : true
                 horizontalAlignment: Text.AlignRight
                 color: Theme.text
                 background: Rectangle {
