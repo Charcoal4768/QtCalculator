@@ -18,7 +18,7 @@ ApplicationWindow {
     color: Theme.background
     Row {
         id: debugPanel
-        property bool expanded: true
+        property bool expanded: false
 
         anchors.top: parent.top
         anchors.right: parent.right

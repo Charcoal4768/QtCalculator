@@ -25,9 +25,10 @@ QString MathEngine::exprCleanup(QString expr) {
     for (auto &letter : expr) {
         if (letter.isDigit() || isOperator(letter) || letter == '.') {
             newExpr.append(letter);
-        } else {
-            return QString(); // return empty string if invalid character is found
         }
+        // else {
+        //     return QString(); // return empty string if invalid character is found
+        // }
     }
     return newExpr;
 }
