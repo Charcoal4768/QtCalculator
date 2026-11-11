@@ -16,25 +16,72 @@ ApplicationWindow {
     visible: true
     title: "Calculator QT"
     color: Theme.background
-    ToolButton {
-        id: debugToggle
+    Row {
+        id: debugPanel
+        property bool expanded: true
+
         anchors.top: parent.top
         anchors.right: parent.right
-        anchors.topMargin: Theme.spaceM
-        anchors.rightMargin: Theme.spaceM
         z: 1
-        text: "👾"
-        font.pixelSize: 20
-        implicitWidth: 44
-        implicitHeight: 44
-        Accessible.name: MathEngine.debugMode ? "Disable debug logging" : "Enable debug logging"
-        onClicked: MathEngine.debugMode = !MathEngine.debugMode
+        spacing: 0
+        width: debugToggle.width + togglePanelButton.width
+        height: 48
+        clip: true
 
-        background: Rectangle {
-            radius: width / 2
-            color: MathEngine.debugMode ? Theme.secondary : Theme.primary
-            border.color: Theme.tertiary
-            border.width: 1
+        ToolButton {
+            id: debugToggle
+            width: 44
+            height: debugPanel.height
+            text: "👾"
+            font.pixelSize: 20
+            Accessible.name: MathEngine.debugMode ? "Disable debug logging" : "Enable debug logging"
+            onClicked: MathEngine.debugMode = !MathEngine.debugMode
+
+            Behavior on width {
+                NumberAnimation { duration: 180; easing.type: Easing.InOutCubic }
+            }
+            Behavior on opacity {
+                NumberAnimation { duration: 180 }
+            }
+
+            states: State {
+                name: "collapsed"
+                when: !debugPanel.expanded
+                PropertyChanges {
+                    target: debugToggle
+                    width: 0
+                    opacity: 0
+                }
+            }
+
+            background: Rectangle {
+                radius: width / 2
+                color: MathEngine.debugMode ? Theme.secondary : Theme.primary
+            }
+        }
+
+        ToolButton {
+            id: togglePanelButton
+            width: 22
+            height: debugPanel.height
+            text: debugPanel.expanded ? "‹" : "›"
+            font.pixelSize: 18
+            Accessible.name: debugPanel.expanded ? "Hide debug toggle" : "Show debug toggle"
+            onClicked: debugPanel.expanded = !debugPanel.expanded
+
+            background: Rectangle {
+                id: toggleBackground
+                radius: 10
+                color: Theme.primary
+
+                Rectangle {
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    width: parent.radius + 1
+                    color: parent.color
+                }
+            }
         }
     }
 
