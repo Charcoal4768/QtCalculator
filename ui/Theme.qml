@@ -9,6 +9,8 @@ QtObject {
     readonly property color secondary: isDarkMode ? "#0f77f5" : "#005bcb"
     readonly property color tertiary: isDarkMode ? "#1A3263" : "#112D4E"
     readonly property color text: isDarkMode ? "#efefef" : "#000000"
+    readonly property color textSecondary: isDarkMode ? "#b0b0b0" : "#4F4F4F"
+    readonly property color input: isDarkMode ? "#3c3a3a" : "#EAEAEA"
 
     readonly property int spaceXS: 4      // Tight gaps (icon-to-text, compact badges)
     readonly property int spaceS: 8       // Standard element spacing (form inputs, list items)
