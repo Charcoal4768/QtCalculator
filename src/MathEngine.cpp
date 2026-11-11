@@ -4,6 +4,17 @@
 
 MathEngine::MathEngine(QObject *parent) : QObject(parent) {}
 
+bool MathEngine::debugMode() const { return m_debugMode; }
+
+void MathEngine::setDebugMode(bool enabled) {
+    if (m_debugMode == enabled) {
+        return;
+    }
+
+    m_debugMode = enabled;
+    emit debugModeChanged();
+}
+
 bool MathEngine::isOperator(QChar c) {
     return c == '+' || c == '-' || c == '*' || c == '/';
 }
@@ -40,13 +51,17 @@ double MathEngine::applyOp(double a, double b, QChar op) {
         return a * b;
     case '/':
         if (b == 0) {
-            qDebug() << "Error: Division by zero.";
+            if (m_debugMode) {
+                qDebug() << "Error: Division by zero.";
+            }
             ErrorMessage = "Error: Division by zero.";
             return 0;
         }
         return a / b;
     default:
-        qDebug() << "Error: Unknown operator" << op;
+        if (m_debugMode) {
+            qDebug() << "Error: Unknown operator" << op;
+        }
         ErrorMessage = "Error: Unknown operator " + QString(op);
         return 0;
     }
@@ -64,7 +79,9 @@ void MathEngine::exprStackSolver(QString expr) {
             // finally, push temp to the numStack
             if (letter == '.') {
                 if (decimalPointEncountered) {
-                    qDebug() << "Error: Multiple decimal points in a number.";
+                    if (m_debugMode) {
+                        qDebug() << "Error: Multiple decimal points in a number.";
+                    }
                     ErrorMessage = "Error: Multiple decimal points in a number.";
                     errorOccurred = true;
                     return;
@@ -90,7 +107,9 @@ void MathEngine::exprStackSolver(QString expr) {
             decimalPointEncountered = false;
             decimalPlace = 0.1;
             if (numStack.size() < 1) {
-                qDebug() << "Error: Not enough operands in the stack.";
+                if (m_debugMode) {
+                    qDebug() << "Error: Not enough operands in the stack.";
+                }
                 ErrorMessage = "Error: Not enough operands in the stack.";
                 errorOccurred = true;
                 return;
@@ -102,7 +121,9 @@ void MathEngine::exprStackSolver(QString expr) {
                 while (!opStack.empty() &&
                        precedence(letter) <= precedence(opStack.top())) {
                     if (numStack.size() < 2) {
-                        qDebug() << "Error: Not enough operands in the stack.";
+                        if (m_debugMode) {
+                            qDebug() << "Error: Not enough operands in the stack.";
+                        }
                         return;
                     }
                     double num1 = numStack.top();
@@ -125,7 +146,9 @@ void MathEngine::exprStackSolver(QString expr) {
     // Now apply remaining operators in the stack
     while (!opStack.empty()) {
         if (numStack.size() < 2) {
-            qDebug() << "Error: Not enough operands in the stack.";
+            if (m_debugMode) {
+                qDebug() << "Error: Not enough operands in the stack.";
+            }
             return;
         }
         double num1 = numStack.top();
@@ -154,11 +177,15 @@ float MathEngine::eval(const QString &message) {
     // clear old leftovers
     resetState();
 
-    qDebug() << "Received from QML:" << message;
+    if (m_debugMode) {
+        qDebug() << "Received from QML:" << message;
+    }
     QString cleanedExpr = exprCleanup(message);
-    qDebug() << "Cleaned up expression:" << cleanedExpr;
+    if (m_debugMode) {
+        qDebug() << "Cleaned up expression:" << cleanedExpr;
+    }
     if (cleanedExpr.isEmpty()) {
-        if (debug) {
+        if (m_debugMode) {
             qDebug() << "Error: Expression is empty or contains invalid characters.";
         }
 
@@ -168,12 +195,12 @@ float MathEngine::eval(const QString &message) {
     }
     exprStackSolver(cleanedExpr);
     if ((numStack.size() == 1) && opStack.empty()) {
-        if (debug) {
+        if (m_debugMode) {
             qDebug() << "Final result:" << numStack.top();
         }
         return numStack.top();
     } else {
-        if (debug) {
+        if (m_debugMode) {
             qDebug() << "Error: Invalid expression.";
         }
         ErrorMessage = "Error: Invalid expression.";

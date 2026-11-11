@@ -16,6 +16,28 @@ ApplicationWindow {
     visible: true
     title: "Calculator QT"
     color: Theme.background
+    ToolButton {
+        id: debugToggle
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.topMargin: Theme.spaceM
+        anchors.rightMargin: Theme.spaceM
+        z: 1
+        text: "👾"
+        font.pixelSize: 20
+        implicitWidth: 44
+        implicitHeight: 44
+        Accessible.name: MathEngine.debugMode ? "Disable debug logging" : "Enable debug logging"
+        onClicked: MathEngine.debugMode = !MathEngine.debugMode
+
+        background: Rectangle {
+            radius: width / 2
+            color: MathEngine.debugMode ? Theme.secondary : Theme.primary
+            border.color: Theme.tertiary
+            border.width: 1
+        }
+    }
+
     GridLayout{
         anchors.fill: parent
         anchors.margins: mainWindow.isCompact ? Theme.pageMarginCompact : Theme.pageMarginExpanded
