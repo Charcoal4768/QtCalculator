@@ -97,9 +97,7 @@ ApplicationWindow {
                     onClicked: {
                         try {
                             const result = MathEngine.eval(expressionField.text)
-                            resultText.text = Number.isFinite(result)
-                                ? "Result: " + result
-                                : "Error: Invalid expression"
+                            resultText.text = "Result: " + result
                         } catch (error) {
                             resultText.text = "Error: " + error.message
                         }
@@ -168,7 +166,7 @@ ApplicationWindow {
                         }
                     }
                     CustomButton {
-                        text: "x"
+                        text: "*"
                         Layout.fillWidth: true
                         Layout.fillHeight: true
                         onClicked: {
@@ -176,7 +174,7 @@ ApplicationWindow {
                         }
                     }
                     CustomButton {
-                        text: "÷"
+                        text: "/"
                         Layout.fillWidth: true
                         Layout.fillHeight: true
                         onClicked: {
