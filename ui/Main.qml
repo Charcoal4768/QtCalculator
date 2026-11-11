@@ -1,6 +1,6 @@
-import QtQuick 2.15
+import QtQuick
 import QtQuick.Controls
-import QtQuick.Layouts 1.15
+import QtQuick.Layouts
 import FirstProject
 
 ApplicationWindow {
@@ -21,68 +21,168 @@ ApplicationWindow {
         columnSpacing: Theme.spaceM
         rowSpacing: Theme.spaceM
         columns: mainWindow.isPortrait ? 1 : 2
-        //just for testing, lets try a text feild and a grid with 9 buttons
         ColumnLayout {
             spacing: 0
+            Layout.alignment: Qt.AlignTop
+            Layout.fillHeight: mainWindow.isPortrait ? false : true
             TextField {
                 id: expressionField
                 height: 40
                 font.pixelSize: 32
+                padding: Theme.spaceS
                 placeholderText: "Enter Expression"
                 Layout.fillWidth: true
                 horizontalAlignment: Text.AlignRight
                 color: Theme.text
                 background: Rectangle {
                     color: Theme.input
+                    topLeftRadius: Theme.radiusMedium
+                    topRightRadius: Theme.radiusMedium
                 }
             }
-            Rectangle {
-                color: Theme.input
-                height: 32
+            Label {
+                id: resultText
+                padding: Theme.spaceS
+                text: "Result"
+                font.pixelSize: 16
+                color: Theme.textSecondary
                 Layout.fillWidth: true
-                Text {
-                    id: resultText
-                    text: "Result"
-                    font.pixelSize: 16
-                    color: Theme.textSecondary
-                    Layout.fillWidth: true
+                background: Rectangle {
+                    color: Theme.input
+                    bottomLeftRadius: Theme.radiusMedium
+                    bottomRightRadius: Theme.radiusMedium
                 }
             }
         }
-        RowLayout{
-            GridLayout {
-                columns: 3
-                columnSpacing: Theme.spaceS
-                rowSpacing: Theme.spaceS
-                //digits
-                Repeater {
-                    model: 9
-                    Button {
-                        text: (index + 1).toString()
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-                    }
-                }
-            }
-            ColumnLayout {
+
+        ColumnLayout {
+            spacing: Theme.spaceS
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            RowLayout{
                 spacing: Theme.spaceS
-                Button {
-                    text: "0"
+                CustomButton {
+                    text: "+/-"
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-
+                    onClicked: {
+                        if (expressionField.text.startsWith("-")) {
+                            expressionField.text = expressionField.text.slice(1)
+                        } else {
+                            expressionField.text = "-" + expressionField.text
+                        }
+                    }
                 }
-                Button {
+                CustomButton {
+                    text: "⌫"
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    onClicked: {
+                        expressionField.text = expressionField.text.slice(0, -1)
+                    }
+                }
+                AltButton {
+                    text: "AC"
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    onClicked: {
+                        expressionField.text = ""
+                        resultText.text = "Result"
+                    }
+                }
+                AltButton {
                     text: "="
                     Layout.fillWidth: true
                     Layout.fillHeight: true
+                    onClicked: {
+                        try {
+                            const result = MathEngine.eval(expressionField.text)
+                            resultText.text = Number.isFinite(result)
+                                ? "Result: " + result
+                                : "Error: Invalid expression"
+                        } catch (error) {
+                            resultText.text = "Error: " + error.message
+                        }
+                    }
                 }
-                Button {
-                    id: themeToggleButton
-                    text: Theme.isDarkMode ? "Light" : "Dark"
-                    onClicked: Theme.isDarkMode = !Theme.isDarkMode
-                    Layout.fillWidth: true
+            }
+            RowLayout{
+                GridLayout {
+                    columns: 3
+                    columnSpacing: Theme.spaceS
+                    rowSpacing: Theme.spaceS
+                    //digits
+                    Repeater {
+                        model: 9
+                        CustomButton {
+                            text: (index+1).toString()
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                            onClicked: {
+                                expressionField.text += text
+                            }
+                        }
+                    }
+                    CustomButton {
+                        text: "0"
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        onClicked: {
+                            expressionField.text += text
+                        }
+                    }
+                    CustomButton {
+                        text: "00"
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        onClicked: {
+                            expressionField.text += text
+                        }
+                    }
+                    CustomButton {
+                        text: Theme.isDarkMode ? "☀️" : "🌙"
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        onClicked: {
+                            Theme.isDarkMode = !Theme.isDarkMode
+                        }
+                    }
+                }
+                ColumnLayout {
+                    spacing: Theme.spaceS
                     Layout.fillHeight: true
+                    CustomButton {
+                        text: "+"
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        onClicked: {
+                            expressionField.text += text
+                        }
+                    }
+                    CustomButton {
+                        text: "-"
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        onClicked: {
+                            expressionField.text += text
+                        }
+                    }
+                    CustomButton {
+                        text: "x"
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        onClicked: {
+                            expressionField.text += text
+                        }
+                    }
+                    CustomButton {
+                        text: "÷"
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        onClicked: {
+                            expressionField.text += text
+                        }
+                    }
                 }
             }
         }

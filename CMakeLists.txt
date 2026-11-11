@@ -14,7 +14,7 @@ find_package(Qt6 REQUIRED COMPONENTS Quick QuickLayouts)
 
 qt_add_executable(appFirstProject
     main.cpp
-    src/secondary.cpp
+    src/MathEngine.cpp
 )
 
 qt_add_qml_module(appFirstProject
@@ -23,6 +23,13 @@ qt_add_qml_module(appFirstProject
     QML_FILES 
         ui/Main.qml
         ui/Theme.qml
+        ui/CustomButton.qml
+        ui/AltButton.qml
+    SOURCES
+        include/MathEngine.h
 )
 
 target_link_libraries(appFirstProject PRIVATE Qt6::Quick Qt6::QuickLayouts)
+target_include_directories(appFirstProject PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)

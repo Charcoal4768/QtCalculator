@@ -8,6 +8,7 @@ QtObject {
     readonly property color primary: isDarkMode ? "#325b8e" : "#3F72AF"
     readonly property color secondary: isDarkMode ? "#0f77f5" : "#005bcb"
     readonly property color tertiary: isDarkMode ? "#1A3263" : "#112D4E"
+    readonly property color alternative: isDarkMode ? "#f5a623" : "#F9C74F"
     readonly property color text: isDarkMode ? "#efefef" : "#000000"
     readonly property color textSecondary: isDarkMode ? "#b0b0b0" : "#4F4F4F"
     readonly property color input: isDarkMode ? "#3c3a3a" : "#EAEAEA"
