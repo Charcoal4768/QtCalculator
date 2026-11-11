@@ -8,6 +8,7 @@ ApplicationWindow {
     readonly property bool isCompact: width < Theme.compactBreakpoint
     readonly property bool isMedium: width >= Theme.compactBreakpoint && width < Theme.mediumBreakpoint
     readonly property bool isExpanded: width >= Theme.mediumBreakpoint
+    property bool errorOccurred: false
 
     id: mainWindow
     width: 600
@@ -45,7 +46,7 @@ ApplicationWindow {
                 padding: Theme.spaceS
                 text: "Result"
                 font.pixelSize: 16
-                color: Theme.textSecondary
+                color: errorOccurred ? '#ff0000' : Theme.textSecondary
                 Layout.fillWidth: true
                 background: Rectangle {
                     color: Theme.input
@@ -66,6 +67,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     onClicked: {
+                        errorOccurred = false
                         if (expressionField.text.startsWith("-")) {
                             expressionField.text = expressionField.text.slice(1)
                         } else {
@@ -78,6 +80,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     onClicked: {
+                        errorOccurred = false
                         expressionField.text = expressionField.text.slice(0, -1)
                     }
                 }
@@ -86,8 +89,9 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     onClicked: {
+                        errorOccurred = false
                         expressionField.text = ""
-                        resultText.text = "Result"
+                        resultText.text = "Result Here"
                     }
                 }
                 AltButton {
@@ -95,9 +99,16 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     onClicked: {
+                        errorOccurred = false
                         try {
                             const result = MathEngine.eval(expressionField.text)
-                            resultText.text = "Result: " + result
+                            const errorMsg = MathEngine.error()
+                            if (errorMsg) {
+                                resultText.text = errorMsg
+                                errorOccurred = true
+                                return
+                            }
+                            resultText.text = result
                         } catch (error) {
                             resultText.text = "Error: " + error.message
                         }
@@ -117,6 +128,7 @@ ApplicationWindow {
                             Layout.fillWidth: true
                             Layout.fillHeight: true
                             onClicked: {
+                                errorOccurred = false
                                 expressionField.text += text
                             }
                         }
@@ -126,14 +138,16 @@ ApplicationWindow {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
                         onClicked: {
+                            errorOccurred = false
                             expressionField.text += text
                         }
                     }
                     CustomButton {
-                        text: "00"
+                        text: "."
                         Layout.fillWidth: true
                         Layout.fillHeight: true
                         onClicked: {
+                            errorOccurred = false
                             expressionField.text += text
                         }
                     }
@@ -154,6 +168,7 @@ ApplicationWindow {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
                         onClicked: {
+                            errorOccurred = false
                             expressionField.text += text
                         }
                     }
@@ -162,6 +177,7 @@ ApplicationWindow {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
                         onClicked: {
+                            errorOccurred = false
                             expressionField.text += text
                         }
                     }
@@ -170,6 +186,7 @@ ApplicationWindow {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
                         onClicked: {
+                            errorOccurred = false
                             expressionField.text += text
                         }
                     }
@@ -178,6 +195,7 @@ ApplicationWindow {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
                         onClicked: {
+                            errorOccurred = false
                             expressionField.text += text
                         }
                     }
