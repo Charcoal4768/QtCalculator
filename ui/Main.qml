@@ -115,7 +115,9 @@ ApplicationWindow {
                 id: resultText
                 padding: Theme.spaceS
                 text: "Result"
-                font.pixelSize: 16
+                font.pixelSize: 24
+                fontSizeMode: Text.Fit 
+                minimumPixelSize: 18
                 color: errorOccurred ? '#ff0000' : Theme.textSecondary
                 Layout.fillWidth: true
                 background: Rectangle {

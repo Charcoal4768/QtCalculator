@@ -36,6 +36,8 @@ Rectangle {
 
     Text {
         id: textItem
+        font.pixelSize: 24
+        fontSizeMode: Text.Fit 
         text: root.text
         anchors.centerIn: parent
         color: Theme.text
