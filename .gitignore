@@ -1,0 +1,44 @@
+# CMake build directories and generated files
+/build/
+/cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+
+# Compiled binaries and object files
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.so.*
+*.dll
+*.dylib
+*.exe
+
+# Qt-generated files
+*_autogen/
+moc_*.cpp
+qrc_*.cpp
+qmlcache_loader.cpp
+.qmlcache/
+
+# Qt Creator user-specific project settings
+*.pro.user
+*.pro.user.*
+*.qmlproject.user
+*.qmlproject.user.*
+*.qbs.user
+*.qbs.user.*
+
+# IDE and editor files
+.vscode/
+.idea/
+*~
+*.swp
+*.swo
+
+# OS metadata
+.DS_Store
+Thumbs.db
